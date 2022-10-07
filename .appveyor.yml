@@ -10,7 +10,6 @@ build: off
 
 
 install:
-
   - java -jar ./artifacts/app-card-delivery.jar &
 
 test_script:
