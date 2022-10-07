@@ -1,11 +1,16 @@
 package ru.netology.delivery.test;
 
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 import ru.netology.delivery.data.DataGenerator;
 
-import static com.codeborne.selenide.Selenide.open;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
 
 class DeliveryTest {
 
@@ -22,6 +27,33 @@ class DeliveryTest {
         var firstMeetingDate = DataGenerator.generateDate(daysToAddForFirstMeeting);
         var daysToAddForSecondMeeting = 7;
         var secondMeetingDate = DataGenerator.generateDate(daysToAddForSecondMeeting);
+
+        //firstDate
+        //city
+        $("[data-test-id='city'] input").setValue(validUser.getCity());
+        //set 1st date
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(firstMeetingDate);
+        //name, phone
+        $("[data-test-id='name'] input").setValue(validUser.getName());
+        $("[data-test-id='phone'] input").setValue(validUser.getPhone());
+        //buttons
+        $("[data-test-id='agreement']").click();
+        $$(".button").find(exactText("Запланировать")).click();
+        $("[data-test-id='success-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15)).shouldHave(text("Встреча успешно запланирована на " + firstMeetingDate));
+
+        //secondDate
+        //set 2nd date
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(secondMeetingDate);
+        //buttons
+        $$(".button").find(exactText("Запланировать")).click();
+        $("[data-test-id='replan-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15)).shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
+        //change date
+        $$(".button").find(exactText("Перепланировать")).click();
+        $("[data-test-id='success-notification']").shouldBe(Condition.visible, Duration.ofSeconds(15)).shouldHave(text("Встреча успешно запланирована на " + secondMeetingDate));
+
+
         // TODO: добавить логику теста в рамках которого будет выполнено планирование и перепланирование встречи.
         // Для заполнения полей формы можно использовать пользователя validUser и строки с датами в переменных
         // firstMeetingDate и secondMeetingDate. Можно также вызывать методы generateCity(locale),

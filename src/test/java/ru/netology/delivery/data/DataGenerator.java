@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Random;
 
+import static org.apache.commons.lang3.RandomStringUtils.random;
+
 public class DataGenerator {
     private DataGenerator() {
     }
@@ -23,8 +25,12 @@ public class DataGenerator {
     public static String generateCity(String locale) {
         // TODO: добавить логику для объявления переменной city и задания её значения, генерацию можно выполнить
         // с помощью Faker, либо используя массив валидных городов и класс Random
-        Faker faker = new Faker(new Locale(locale));
-        String city = generateCity(faker.address().city());
+
+        String[] cityNames =
+            {"Абакан", "Владикавказ", "Екатеринбург", "Йошкар-Ола", "Казань", "Калининград",
+            "Калуга", "Кострома", "Краснодар", "Красноярск", "Курган", "Махачкала", "Москва",
+            "Петропавловск-Камчатский", "Ростов-на-Дону", "Санкт-Петербург", "Сыктывкар", "Чебоксары"};
+        String city = (cityNames[new Random().nextInt(cityNames.length)]);
         return city;
     }
 
@@ -32,7 +38,7 @@ public class DataGenerator {
         // TODO: добавить логику для объявления переменной name и задания её значения, для генерации можно
         // использовать Faker
         Faker faker = new Faker(new Locale(locale));
-        String name = generateName(faker.name().firstName() + "" + faker.name().lastName());
+        String name = faker.name().lastName() + " " + faker.name().firstName();
         return name;
     }
 
@@ -40,7 +46,7 @@ public class DataGenerator {
         // TODO: добавить логику для объявления переменной phone и задания её значения, для генерации можно
         // использовать Faker
         Faker faker = new Faker(new Locale(locale));
-        String phone = generatePhone(faker.phoneNumber().phoneNumber());
+        String phone = faker.phoneNumber().phoneNumber();
         return phone;
     }
 
