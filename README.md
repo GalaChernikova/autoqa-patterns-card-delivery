@@ -1,0 +1,1 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/f0hmavb8e80q5oky?svg=true)](https://ci.appveyor.com/project/GalaChernikova/autoqa-patterns-card-delivery)
